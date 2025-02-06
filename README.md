@@ -1,86 +1,158 @@
-three.js
-========
+######################################################################
+#
+# Project specific properties.
+#
+# NOTE: paths must use /, not \, even on DOS. If you want to use /, use //
+# Use : or ; as element seperators in path, ant can figure those out.
+# NOTE you can use previously defined properties with ${prop}, but it
+# must really have been defined previously
+#
+# Most of the properties are commented pretty well. If you can't figure them
+# out, please beat Amit Singh.
+#
+# Any property with the list identifier in the name is a comma separated
+# list of values such as directories or names.
+# A example:
+#   list.colors=red,blue,green,yellow
+#
 
-[![NPM package][npm]][npm-url]
-[![Build Size][build-size]][build-size-url]
-[![Build Status][build-status]][build-status-url]
-[![Dependencies][dependencies]][dependencies-url]
-[![Dev Dependencies][dev-dependencies]][dev-dependencies-url]
-[![Language Grade][lgtm]][lgtm-url]
+###############################################################################
+# Most of the properties below are things that do not need to be changed      #
+# unless you really know what you're doing.                                   #
+###############################################################################
 
-#### JavaScript 3D library ####
-
-The aim of the project is to create an easy to use, lightweight, 3D library with a default WebGL renderer. The library also provides Canvas 2D, SVG and CSS3D renderers in the examples.
-
-[Examples](http://threejs.org/examples/) &mdash;
-[Documentation](http://threejs.org/docs/) &mdash;
-[Wiki](https://github.com/mrdoob/three.js/wiki) &mdash;
-[Migrating](https://github.com/mrdoob/three.js/wiki/Migration-Guide) &mdash;
-[Questions](http://stackoverflow.com/questions/tagged/three.js) &mdash;
-[Forum](https://discourse.threejs.org/) &mdash;
-[Gitter](https://gitter.im/mrdoob/three.js) &mdash;
-[Slack](https://join.slack.com/t/threejs/shared_invite/enQtMzYxMzczODM2OTgxLTQ1YmY4YTQxOTFjNDAzYmQ4NjU2YzRhNzliY2RiNDEyYjU2MjhhODgyYWQ5Y2MyZTU3MWNkOGVmOGRhOTQzYTk)
-
-### Usage ###
-
-This code creates a scene, a camera, and a geometric cube, and it adds the cube to the scene. It then creates a `WebGL` renderer for the scene and camera, and it adds that viewport to the `document.body` element. Finally, it animates the cube within the scene for the camera.
-
-```javascript
-import * as THREE from 'js/three.module.js';
-
-var camera, scene, renderer;
-var geometry, material, mesh;
-
-init();
-animate();
-
-function init() {
-
-	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
-	camera.position.z = 1;
-
-	scene = new THREE.Scene();
-
-	geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-	material = new THREE.MeshNormalMaterial();
-
-	mesh = new THREE.Mesh( geometry, material );
-	scene.add( mesh );
-
-	renderer = new THREE.WebGLRenderer( { antialias: true } );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	document.body.appendChild( renderer.domElement );
-
-}
-
-function animate() {
-
-	requestAnimationFrame( animate );
-
-	mesh.rotation.x += 0.01;
-	mesh.rotation.y += 0.02;
-
-	renderer.render( scene, camera );
-
-}
-```
-
-If everything went well you should see [this](https://jsfiddle.net/f2Lommf5/).
-
-### Change log ###
-
-[Releases](https://github.com/mrdoob/three.js/releases)
+customer.type=FS
 
 
-[npm]: https://img.shields.io/npm/v/three.svg
-[npm-url]: https://www.npmjs.com/package/three
-[build-size]: https://badgen.net/bundlephobia/minzip/three
-[build-size-url]: https://bundlephobia.com/result?p=three
-[build-status]: https://travis-ci.org/mrdoob/three.js.svg?branch=dev
-[build-status-url]: https://travis-ci.org/mrdoob/three.js
-[dependencies]: https://img.shields.io/david/mrdoob/three.js.svg
-[dependencies-url]: https://david-dm.org/mrdoob/three.js
-[dev-dependencies]: https://img.shields.io/david/dev/mrdoob/three.js.svg
-[dev-dependencies-url]: https://david-dm.org/mrdoob/three.js#info=devDependencies
-[lgtm]: https://img.shields.io/lgtm/grade/javascript/g/mrdoob/three.js.svg?label=code%20quality
-[lgtm-url]: https://lgtm.com/projects/g/mrdoob/three.js/
+# Target store directory for config.xml
+src.domain.config.dir=${domain.dir}/config/subscriberonline/${build.env}
+
+
+# Target unix environment domain configuration
+target.domain.dir=${sfs.home}/domains/weblogic/14c/subscriberonline
+
+# Properties file location
+src.properties.dir=${src.app.config.dir}/${customer.type}
+
+# Deployment settings
+has.deploy2=false
+deploy1.server.name=
+deploy2.server.name=
+deploy1.scripts.dir=${target.build.dir}/unix/onlineserver1
+deploy2.scripts.dir=
+deploy.server.login=
+deploy.server.keyfile=
+
+
+#Target archive file
+
+target.archive.appname=subscriberonlineapp
+target.archive.filename=${target.archive.appname}.tar
+target.archive.file=${target.build.dir}/archive/${target.archive.filename}
+target.compressed.archive.filename=${target.archive.appname}.tar.gz
+target.compressed.archive.file=${target.build.dir}/archive/${target.compressed.archive.filename}
+
+
+# deploy archive file
+deploy.archive.filename=${target.archive.appname}.deploy.tar
+deploy.archive.file=${target.build.dir}/archive/${deploy.archive.filename}
+deploy.compressed.archive.filename=${deploy.archive.filename}.gz
+deploy.compressed.archive.file=${deploy.archive.file}.gz
+
+
+#-------------------------------------------------------------
+# subscripberApp Identity when accessing other services
+#-------------------------------------------------------------
+subscriber.app.username=AppSubscriber
+subscriber.app.password=nj53-SEYbf-2mJr
+
+
+#-------------------------------------------------------------
+# Subscriber WSDl Configuration
+#-------------------------------------------------------------
+subscriber.wsdl.url=${subscriber.online.http}/subscriberWS/com/deltadental/subscriber/webServices/SubscriberWS.jws?WSDL
+
+#-------------------------------------------------------------
+# PreEnrollment WSDl Configuration
+#-------------------------------------------------------------
+preenrollment.wsdl.url=${subscriber.online.http}/subscriberWS/com/deltadental/subscriber/webServices/PreEnrollmentWS.jws?WSDL
+preenrollment.wsdl.rpc.timeout=60000
+preenrollment.wsdl.binding.timeout=60000
+
+#-------------------------------------------------------------
+# RightSizeDental Web Service
+#-------------------------------------------------------------
+rightsizedental.wsdl.url=${subscriber.online.http}/subscriberWS/com/deltadental/subscriber/webServices/RightSizeDentalWS.jws?WSDL
+rightsizedental.connection.timeout=60000
+rightsizedental.read.timeout=60000
+
+#-------------------------------------------------------------
+# Email Web Service configuration
+#-------------------------------------------------------------
+
+email.username=${subscriber.app.username}
+email.password=${subscriber.app.password}
+
+
+#-----------------------------------------------------------------------------#
+# Service Locator
+#-----------------------------------------------------------------------------#
+subscriber.provider.url=${subscriber.online.t3}
+subscriber.security.principal=${subscriber.app.username}
+subscriber.security.credential=${subscriber.app.password}
+
+
+#-------------------------------------------------------------
+# Iebs Web Service
+#-------------------------------------------------------------
+iebs.wsdl.url=${iebs.online.http}/iebsWebServices/external/IebsWebService.jws?WSDL
+
+#-------------------------------------------------------------
+# IEBS commercial Web Service
+#-------------------------------------------------------------
+iebs.commercial.wsdl.url=${iebs.online.http}/iebsWebServices/IebsCommercialWebService?WSDL
+
+#-----------------------------------------------------------------------------#
+# From address used by EligExtract and IDCard generation process
+#-----------------------------------------------------------------------------#
+sms.fromaddress=sms@ddmifs.renhsc.com
+sms.smtpserver=fgpcamail.ddmifs.renhsc.com
+sms.smtpport=25
+
+#-------------------------------------------------------------
+# Event Service locator
+#-------------------------------------------------------------
+event.handler.service.user=${subscriber.app.username}
+event.handler.service.password=${subscriber.app.password}
+
+#-------------------------------------------------------------
+# DCS Web Service (only valid for local, fstst2, fgptst10, fsuat2, fgpuat20)
+#-------------------------------------------------------------
+dcs.endpoint.url=
+dcs.connection.timeout=
+dcs.read.timeout=
+
+#-----------------------------------------------------------------------------#
+#********************** IEBS psp Service       ****************#
+#-----------------------------------------------------------------------------#
+iebs.psp.service.endpoint.url=${iebs.online.http}/iebsWS/IebsPSPWebService
+
+#-----------------------------------------------------------------------------#
+#************************ Provider List Configuration ************************#
+#-----------------------------------------------------------------------------#
+
+provider.list.wsdl.url=${provider.locator.url}/LocatorService/LocatorService.asmx?WSDL
+provider.list.wsdl.rpc.timeout=60000
+provider.list.wsdl.binding.timeout=60000
+
+#-----------------------------------------------------------------------------#
+#********************* Vault Configuration ***********************************#
+#-----------------------------------------------------------------------------#
+vault.domain=vvaultuat
+vault.path=/secret/uat10/ets-subscriber-app/oidc_client 
+
+#----------------------------------------------------------------------------------------#
+#************************ Okta Configuration *********************************#
+#----------------------------------------------------------------------------------------#
+
+okta.endpoint.uri=https://auth.uat-fgp.rooseveltsolutions.com/oauth2/aus89n0nyuphhVZC51d7/v1/token
